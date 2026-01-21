@@ -12,6 +12,7 @@ from plotting.heatmap import plot_dow_hour_heatmap
 from preprocessing.datetime import add_time_features, parse_datetime_columns
 from preprocessing.join import join_user_info
 from utils.laod import load_dataframes
+from utils.paths import get_figure_path
 
 # =============================================================================
 # データ前処理
@@ -192,14 +193,16 @@ def analyze_heatmap(history: pl.DataFrame, user: pl.DataFrame) -> None:
         f"Matrix shapes: staff={mat_staff.shape}, student={mat_student.shape}",
     )
 
-    # プロット
+    # プロット（図を保存）
     plot_dow_hour_heatmap(
         mat_staff,
         f"staff: 曜日・時間帯別利用割合 (総利用回数={staff_total})",
+        save_path=get_figure_path("01_heatmap_staff.png"),
     )
     plot_dow_hour_heatmap(
         mat_student,
         f"student: 曜日・時間帯別利用割合 (総利用回数={student_total})",
+        save_path=get_figure_path("01_heatmap_student.png"),
     )
 
 

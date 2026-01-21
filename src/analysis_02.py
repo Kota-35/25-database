@@ -23,6 +23,7 @@ from preprocessing.transform import (
     cast_distance_to_float,
 )
 from utils.laod import load_dataframes
+from utils.paths import get_figure_path
 
 # =============================================================================
 # データ前処理
@@ -138,6 +139,7 @@ def analyze_boxplot_by_user_type(
         df,
         "distance_f",
         "user_type別 距離の分布",
+        save_path=get_figure_path("02_boxplot_distance_by_user_type.png"),
     )
     plt.show()
 
@@ -146,6 +148,7 @@ def analyze_boxplot_by_user_type(
         df,
         "duration_min",
         "user_type別 所要時間(分)の分布",
+        save_path=get_figure_path("02_boxplot_duration_by_user_type.png"),
     )
     plt.show()
 
@@ -178,6 +181,7 @@ def analyze_distance_by_passengers(
         title="乗客数と距離の散布図 (user_type別)",
         xlabel="passengers_count",
         ylabel="distance",
+        save_path=get_figure_path("02_scatter_passengers_distance.png"),
     )
 
     # ユーザータイプ別の箱ひげ図
@@ -210,6 +214,9 @@ def analyze_distance_by_passengers(
             title=f"乗客数カテゴリ別 距離の分布 ({ut})",
             xlabel="passengers_cat",
             ylabel="distance",
+            save_path=get_figure_path(
+                f"02_boxplot_distance_by_passengers_{ut}.png",
+            ),
         )
         plt.show()
 

@@ -1,8 +1,8 @@
 """分析3: 目的地数・乗客数の分布分析.
 
 このモジュールでは以下の分析を行う:
-- ユーザータイプ別の1乗車あたり目的地数（バイオリン＋箱ひげ図）
-- 目的地数別の距離分布（ジッター散布＋箱ひげ図）
+- ユーザータイプ別の1乗車あたり目的地数
+- 目的地数別の距離分布
 - 乗客数×目的地数の割合ヒートマップ
 """
 
@@ -38,6 +38,7 @@ from preprocessing.transform import (
     count_spots_per_history,
 )
 from utils.laod import load_dataframes
+from utils.paths import get_figure_path
 
 # =============================================================================
 # データ前処理
@@ -195,6 +196,7 @@ def analyze_spots_by_user_type(df: pl.DataFrame) -> None:
         labels=user_types,
         title="user_type別：1乗車あたり目的地数",
         ylabel="目的地数（1乗車あたり） spots_n",
+        save_path=get_figure_path("03_violin_spots_by_user_type.png"),
     )
     plt.show()
 
@@ -214,6 +216,7 @@ def analyze_distance_by_spots(df: pl.DataFrame) -> None:
         title="目的地数×距離：ジッター散布",
         xlabel="目的地数ビン（spots_n）",
         ylabel="移動距離（distance）",
+        save_path=get_figure_path("03_jitter_distance_by_spots.png"),
     )
 
     print("--- 目的地数×距離：箱ひげ図 ---")
@@ -230,6 +233,7 @@ def analyze_distance_by_spots(df: pl.DataFrame) -> None:
         title="目的地数×距離",
         xlabel="目的地数ビン（spots_n）",
         ylabel="移動距離（distance）",
+        save_path=get_figure_path("03_boxplot_distance_by_spots.png"),
     )
     plt.show()
 
@@ -251,6 +255,7 @@ def analyze_passengers_vs_spots(df: pl.DataFrame) -> None:
         title="乗車人数×目的地数：乗車割合ヒートマップ（全体比）",
         xlabel="目的地数ビン（spots_n）",
         ylabel="乗客人数ビン（passengers_count）",
+        save_path=get_figure_path("03_heatmap_passengers_spots.png"),
     )
 
 
