@@ -193,7 +193,7 @@ def analyze_spots_by_user_type(df: pl.DataFrame) -> None:
     _, _ = plot_violin_with_boxplot(
         data_lists,
         labels=user_types,
-        title="user_type別：1乗車あたり目的地数（バイオリン＋箱ひげ）",
+        title="user_type別：1乗車あたり目的地数",
         ylabel="目的地数（1乗車あたり） spots_n",
     )
     plt.show()
@@ -227,7 +227,7 @@ def analyze_distance_by_spots(df: pl.DataFrame) -> None:
     _, _ = plot_boxplot_by_category(
         data_lists,
         labels=SPOTS_BINS,
-        title="目的地数×距離：箱ひげ図",
+        title="目的地数×距離",
         xlabel="目的地数ビン（spots_n）",
         ylabel="移動距離（distance）",
     )

@@ -137,7 +137,7 @@ def analyze_boxplot_by_user_type(
     _, _ = plot_boxplot_by_user_type(
         df,
         "distance_f",
-        "Distance by user_type (boxplot)",
+        "user_type別 距離の分布",
     )
     plt.show()
 
@@ -145,7 +145,7 @@ def analyze_boxplot_by_user_type(
     _, _ = plot_boxplot_by_user_type(
         df,
         "duration_min",
-        "Duration (min) by user_type (boxplot)",
+        "user_type別 所要時間(分)の分布",
     )
     plt.show()
 
@@ -175,7 +175,7 @@ def analyze_distance_by_passengers(
         x_col="passengers_count",
         y_col="distance",
         category_col="user_type",
-        title="Distance vs Passengers Count (by user_type)",
+        title="乗客数と距離の散布図 (user_type別)",
         xlabel="passengers_count",
         ylabel="distance",
     )
@@ -207,7 +207,7 @@ def analyze_distance_by_passengers(
         _, _ = plot_boxplot_by_category(
             valid_data,
             valid_labels,
-            title=f"Distance Distribution by Passengers Category ({ut})",
+            title=f"乗客数カテゴリ別 距離の分布 ({ut})",
             xlabel="passengers_cat",
             ylabel="distance",
         )

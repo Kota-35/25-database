@@ -195,11 +195,11 @@ def analyze_heatmap(history: pl.DataFrame, user: pl.DataFrame) -> None:
     # プロット
     plot_dow_hour_heatmap(
         mat_staff,
-        f"staff: share within type by dow x hour (total rides={staff_total})",
+        f"staff: 曜日・時間帯別利用割合 (総利用回数={staff_total})",
     )
     plot_dow_hour_heatmap(
         mat_student,
-        f"student: share within type by dow x hour (total rides={student_total})",
+        f"student: 曜日・時間帯別利用割合 (総利用回数={student_total})",
     )
 
 
