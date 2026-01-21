@@ -10,6 +10,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+if TYPE_CHECKING:
+    from pathlib import Path
+
+
 import matplotlib.pyplot as plt
 import matplotlib_fontja  # noqa: F401
 
@@ -32,6 +36,7 @@ def plot_heatmap(
     figsize: tuple[float, float] = (8, 6),
     annotate: bool = False,
     fmt: str = ".2f",
+    save_path: str | Path | None = None,
 ) -> None:
     """汎用ヒートマップを描画する.
 
@@ -46,6 +51,7 @@ def plot_heatmap(
         figsize: 図のサイズ
         annotate: セルに値を表示するか
         fmt: 値の表示フォーマット
+        save_path: 図の保存パス（Noneの場合は保存しない）
     """
     _, ax = plt.subplots(figsize=figsize)
     im = ax.imshow(mat, aspect="auto", origin="upper")
@@ -74,6 +80,11 @@ def plot_heatmap(
                 )
 
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     plt.show()
 
 
@@ -82,6 +93,7 @@ def plot_dow_hour_heatmap(
     title: str,
     value_label: str = "share_within_type",
     figsize: tuple[float, float] = (12, 3.5),
+    save_path: str | Path | None = None,
 ) -> None:
     """曜日×時間帯のヒートマップを描画する.
 
@@ -90,6 +102,7 @@ def plot_dow_hour_heatmap(
         title: グラフのタイトル
         value_label: カラーバーのラベル
         figsize: 図のサイズ
+        save_path: 図の保存パス（Noneの場合は保存しない）
     """
     dow_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     hours = [str(h) for h in range(24)]
@@ -106,6 +119,11 @@ def plot_dow_hour_heatmap(
     cbar = plt.colorbar(im, ax=ax)
     cbar.set_label(value_label)
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     plt.show()
 
 
@@ -118,6 +136,7 @@ def plot_category_heatmap(
     ylabel: str,
     figsize: tuple[float, float] = (8, 6),
     fmt: str = ".2f",
+    save_path: str | Path | None = None,
 ) -> None:
     """カテゴリ×カテゴリのヒートマップを描画する（値注釈付き）.
 
@@ -130,6 +149,7 @@ def plot_category_heatmap(
         ylabel: Y軸ラベル
         figsize: 図のサイズ
         fmt: 値の表示フォーマット
+        save_path: 図の保存パス（Noneの場合は保存しない）
     """
     plot_heatmap(
         mat,
@@ -141,4 +161,5 @@ def plot_category_heatmap(
         figsize=figsize,
         annotate=True,
         fmt=fmt,
+        save_path=save_path,
     )

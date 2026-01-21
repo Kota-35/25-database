@@ -1,6 +1,7 @@
 """散布図関連のプロット関数."""
 
 from collections.abc import Sequence
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -17,6 +18,7 @@ def plot_scatter_by_category(
     ylabel: str = "",
     alpha: float = 0.4,
     figsize: tuple[float, float] = (8, 5),
+    save_path: str | Path | None = None,
 ) -> None:
     """カテゴリ別の散布図を描画する.
 
@@ -30,6 +32,7 @@ def plot_scatter_by_category(
         ylabel: Y軸ラベル
         alpha: 透明度
         figsize: 図のサイズ
+        save_path: 図の保存パス（Noneの場合は保存しない）
     """
     categories = sorted(
         df.select(category_col).unique().to_series().drop_nulls().to_list(),
@@ -47,6 +50,11 @@ def plot_scatter_by_category(
     ax.set_title(title)
     ax.legend()
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     plt.show()
 
 
@@ -63,6 +71,7 @@ def plot_jitter_scatter(
     alpha: float = 0.35,
     figsize: tuple[float, float] = (8, 5),
     seed: int = 42,
+    save_path: str | Path | None = None,
 ) -> None:
     """カテゴリ別のジッター散布図を描画する.
 
@@ -79,6 +88,7 @@ def plot_jitter_scatter(
         alpha: 透明度
         figsize: 図のサイズ
         seed: 乱数シード
+        save_path: 図の保存パス（Noneの場合は保存しない）
     """
     rng = np.random.default_rng(seed)
 
@@ -106,4 +116,9 @@ def plot_jitter_scatter(
     ax.set_title(title)
 
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     plt.show()

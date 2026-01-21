@@ -1,6 +1,7 @@
 """箱ひげ図・バイオリン図のプロット関数."""
 
 from collections.abc import Sequence
+from pathlib import Path
 from typing import Any
 
 import matplotlib.pyplot as plt
@@ -19,6 +20,7 @@ def plot_boxplot_by_category(
     figsize: tuple[float, float] = (8, 5),
     *,
     showfliers: bool = True,
+    save_path: str | Path | None = None,
 ) -> tuple[Figure, Axes]:
     """カテゴリ別の箱ひげ図を描画する.
 
@@ -30,6 +32,7 @@ def plot_boxplot_by_category(
         ylabel: Y軸ラベル
         figsize: 図のサイズ
         showfliers: 外れ値を表示するか
+        save_path: 図の保存パス（Noneの場合は保存しない）
 
     Returns:
         Figure と Axes のタプル
@@ -40,6 +43,11 @@ def plot_boxplot_by_category(
     ax.set_ylabel(ylabel)
     ax.set_title(title)
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     return fig, ax
 
 
@@ -50,6 +58,7 @@ def plot_violin_with_boxplot(
     ylabel: str,
     figsize: tuple[float, float] = (8, 5),
     boxplot_width: float = 0.18,
+    save_path: str | Path | None = None,
 ) -> tuple[Figure, Axes]:
     """バイオリン図と箱ひげ図を重ねて描画する.
 
@@ -60,6 +69,7 @@ def plot_violin_with_boxplot(
         ylabel: Y軸ラベル
         figsize: 図のサイズ
         boxplot_width: 箱ひげ図の幅
+        save_path: 図の保存パス（Noneの場合は保存しない）
 
     Returns:
         Figure と Axes のタプル
@@ -82,6 +92,11 @@ def plot_violin_with_boxplot(
     ax.set_ylabel(ylabel)
     ax.set_title(title)
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     return fig, ax
 
 
@@ -91,6 +106,7 @@ def plot_boxplot_by_user_type(
     title: str,
     figsize: tuple[float, float] = (6, 4),
     user_types: Sequence[str] | None = None,
+    save_path: str | Path | None = None,
 ) -> tuple[Figure, Axes]:
     """ユーザータイプ別の箱ひげ図を描画する.
 
@@ -100,6 +116,7 @@ def plot_boxplot_by_user_type(
         title: グラフタイトル
         figsize: 図のサイズ
         user_types: 表示するユーザータイプのリスト（デフォルト: ["staff", "student"]）
+        save_path: 図の保存パス（Noneの場合は保存しない）
 
     Returns:
         Figure と Axes のタプル
@@ -126,6 +143,11 @@ def plot_boxplot_by_user_type(
     ax.set_title(title)
     ax.set_ylabel(value_col)
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     return fig, ax
 
 
@@ -140,6 +162,7 @@ def plot_jitter_scatter(
     marker_size: float = 3,
     alpha: float = 0.35,
     seed: int = 42,
+    save_path: str | Path | None = None,
 ) -> tuple[Figure, Axes]:
     """ジッター散布図を描画する.
 
@@ -154,6 +177,7 @@ def plot_jitter_scatter(
         marker_size: マーカーサイズ
         alpha: 透明度
         seed: 乱数シード
+        save_path: 図の保存パス（Noneの場合は保存しない）
 
     Returns:
         Figure と Axes のタプル
@@ -173,6 +197,11 @@ def plot_jitter_scatter(
     ax.set_ylabel(ylabel)
     ax.set_title(title)
     plt.tight_layout()
+
+    if save_path:
+        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        print(f"Figure saved: {save_path}")
+
     return fig, ax
 
 
