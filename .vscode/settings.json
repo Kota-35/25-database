@@ -1,0 +1,17 @@
+{
+	"python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+	"[python]": {
+		"editor.codeActionsOnSave": {
+			"source.fixAll.ruff": "explicit",
+			"source.organizeImports.ruff": "explicit"
+		},
+		"editor.formatOnSave": true,
+		"editor.defaultFormatter": "charliermarsh.ruff",
+		"editor.wordBasedSuggestions": "currentDocument"
+	},
+    "ty.importStrategy": "useBundled",
+    "ty.interpreter": [
+        "${workspaceFolder}/.venv"
+    ],
+    "latex-workshop.latex.outDir": ".",
+}
