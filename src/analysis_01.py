@@ -4,64 +4,18 @@
 - 曜日×時間帯別の利用割合ヒートマップ
 """
 
-import matplotlib.pyplot as plt
 import numpy as np
 import polars as pl
 from numpy.typing import NDArray
 
+from plotting.heatmap import plot_dow_hour_heatmap
+from preprocessing.datetime import add_time_features, parse_datetime_columns
+from preprocessing.join import join_user_info
 from utils.laod import load_dataframes
 
 # =============================================================================
 # データ前処理
 # =============================================================================
-
-
-def parse_datetime_columns(df: pl.DataFrame) -> pl.DataFrame:
-    """started_at, ended_at を datetime 型に変換する.
-
-    Args:
-        df: history データフレーム
-
-    Returns:
-        datetime 列が追加されたデータフレーム
-    """
-    return df.with_columns(
-        pl.col("started_at")
-        .str.to_datetime(strict=False)
-        .alias("started_at_dt"),
-        pl.col("ended_at").str.to_datetime(strict=False).alias("ended_at_dt"),
-    )
-
-
-def add_time_features(df: pl.DataFrame) -> pl.DataFrame:
-    """曜日(dow)と時間(hour)の特徴量を追加する.
-
-    Args:
-        df: started_at_dt 列を持つデータフレーム
-
-    Returns:
-        dow, hour 列が追加されたデータフレーム
-    """
-    return df.with_columns(
-        pl.col("started_at_dt").dt.weekday().alias("dow"),
-        pl.col("started_at_dt").dt.hour().alias("hour"),
-    )
-
-
-def join_user_info(
-    history_df: pl.DataFrame,
-    user_df: pl.DataFrame,
-) -> pl.DataFrame:
-    """history に user 情報を結合する.
-
-    Args:
-        history_df: 履歴データフレーム
-        user_df: ユーザーデータフレーム
-
-    Returns:
-        結合されたデータフレーム
-    """
-    return history_df.join(user_df, on="user_id", how="left")
 
 
 def preprocess_for_heatmap(
@@ -207,42 +161,6 @@ def create_heatmap_matrix(
 
 
 # =============================================================================
-# プロット関数
-# =============================================================================
-
-
-def plot_heatmap(
-    mat: NDArray[np.float64],
-    title: str,
-    value_label: str = "share_within_type",
-) -> None:
-    """ヒートマップを描画する.
-
-    Args:
-        mat: (7, 24) の2次元配列
-        title: グラフのタイトル
-        value_label: カラーバーのラベル
-    """
-
-    dow_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    hours = [str(h) for h in range(24)]
-
-    _, ax = plt.subplots(figsize=(12, 3.5))
-    im = ax.imshow(mat, aspect="auto")
-    ax.set_title(title)
-    ax.set_yticks(range(7))
-    ax.set_yticklabels(dow_labels)
-    ax.set_xticks(range(24))
-    ax.set_xticklabels(hours)
-    ax.set_xlabel("Hour of day")
-    ax.set_ylabel("Day of week")
-    cbar = plt.colorbar(im, ax=ax)
-    cbar.set_label(value_label)
-    plt.tight_layout()
-    plt.show()
-
-
-# =============================================================================
 # 分析実行関数
 # =============================================================================
 
@@ -275,11 +193,11 @@ def analyze_heatmap(history: pl.DataFrame, user: pl.DataFrame) -> None:
     )
 
     # プロット
-    plot_heatmap(
+    plot_dow_hour_heatmap(
         mat_staff,
         f"staff: share within type by dow x hour (total rides={staff_total})",
     )
-    plot_heatmap(
+    plot_dow_hour_heatmap(
         mat_student,
         f"student: share within type by dow x hour (total rides={student_total})",
     )
@@ -287,7 +205,6 @@ def analyze_heatmap(history: pl.DataFrame, user: pl.DataFrame) -> None:
 
 def main() -> None:
     """メイン関数."""
-
     dfs = load_dataframes()
     history, user = dfs["history"], dfs["user"]
 
