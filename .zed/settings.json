@@ -2,8 +2,6 @@
   "languages": {
     "Python": {
       "language_servers": [
-        // Disable basedpyright and enable ty, and otherwise
-        // use the default configuration.
         "ty",
         "!basedpyright",
         "...",
