@@ -84,38 +84,6 @@ def preprocess_for_heatmap(
     return df
 
 
-def preprocess_for_boxplot(
-    history: pl.DataFrame,
-    user: pl.DataFrame,
-) -> pl.DataFrame:
-    """箱ひげ図分析用のデータ前処理を行う.
-
-    Args:
-        history: 履歴データフレーム
-        user: ユーザーデータフレーム
-
-    Returns:
-        前処理済みデータフレーム
-    """
-    df = (
-        parse_datetime_columns(history)
-        .with_columns(
-            pl.col("distance")
-            .cast(pl.Float64, strict=False)
-            .alias("distance_f"),
-        )
-        .pipe(join_user_info, user)
-        .with_columns(
-            (pl.col("ended_at_dt") - pl.col("started_at_dt"))
-            .dt.total_minutes()
-            .alias("duration_min"),
-        )
-        .drop_nulls(["user_type", "distance_f", "duration_min"])
-        .filter((pl.col("duration_min") > 0) & (pl.col("distance_f") >= 0))
-    )
-    return df
-
-
 # =============================================================================
 # 集計処理
 # =============================================================================
@@ -274,44 +242,6 @@ def plot_heatmap(
     plt.show()
 
 
-def plot_boxplot_by_user_type(
-    df: pl.DataFrame,
-    value_col: str,
-    title: str,
-) -> None:
-    """ユーザータイプ別の箱ひげ図を描画する.
-
-    Args:
-        df: 前処理済みデータフレーム
-        value_col: 値として使用する列名
-        title: グラフのタイトル
-    """
-
-    staff_vals = (
-        df.filter(pl.col("user_type") == "staff")
-        .select(value_col)
-        .to_numpy()
-        .ravel()
-    )
-    student_vals = (
-        df.filter(pl.col("user_type") == "student")
-        .select(value_col)
-        .to_numpy()
-        .ravel()
-    )
-
-    _, ax = plt.subplots(figsize=(6, 4))
-    ax.boxplot(
-        [staff_vals, student_vals],
-        tick_labels=["staff", "student"],
-        showfliers=True,
-    )
-    ax.set_title(title)
-    ax.set_ylabel(value_col)
-    plt.tight_layout()
-    plt.show()
-
-
 # =============================================================================
 # 分析実行関数
 # =============================================================================
@@ -352,29 +282,6 @@ def analyze_heatmap(history: pl.DataFrame, user: pl.DataFrame) -> None:
     plot_heatmap(
         mat_student,
         f"student: share within type by dow x hour (total rides={student_total})",
-    )
-
-
-def analyze_boxplot(history: pl.DataFrame, user: pl.DataFrame) -> None:
-    """距離・所要時間のユーザータイプ別比較分析を実行する.
-
-    Args:
-        history: 履歴データフレーム
-        user: ユーザーデータフレーム
-    """
-    # データ前処理
-    df = preprocess_for_boxplot(history, user)
-
-    # 箱ひげ図プロット
-    plot_boxplot_by_user_type(
-        df,
-        "distance_f",
-        "Distance by user_type (boxplot)",
-    )
-    plot_boxplot_by_user_type(
-        df,
-        "duration_min",
-        "Duration(min) by user_type (boxplot)",
     )
 
 
