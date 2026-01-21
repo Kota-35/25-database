@@ -1,0 +1,32 @@
+{
+  "languages": {
+    "Python": {
+      "language_servers": [
+        // Disable basedpyright and enable ty, and otherwise
+        // use the default configuration.
+        "ty",
+        "!basedpyright",
+        "...",
+      ],
+    },
+  },
+  "lsp": {
+    "ruff": {
+      "initialization_options": {
+        "settings": {},
+      },
+    },
+    "ty": {
+      "binary": {
+        "path": ".venv/bin/ty",
+        "arguments": ["server"],
+      },
+    },
+  },
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true,
+  },
+}
