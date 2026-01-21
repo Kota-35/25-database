@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
+import matplotlib_fontja  # noqa: F401
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
